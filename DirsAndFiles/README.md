@@ -1,0 +1,1 @@
+Practice scripts for directory and file operations in Python.
