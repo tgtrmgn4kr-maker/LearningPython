@@ -54,5 +54,3 @@ for dir_path, dir_names, file_names in os.walk(args.src):
             if src_time > dest_time:   #若來源檔較新          
                 shutil.copy2(src_path, save_path) #複製檔案
                 print(f'Updated: {src_path} to {save_path}')
-            else:
-                pass
