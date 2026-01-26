@@ -1,8 +1,9 @@
 import argparse
 import platform
 import re
+import subprocess
 from pytubefix import YouTube, exceptions, streams
-from os import path, makedirs
+from os import path, makedirs, remove
 
 def pyTube_folder():    #To check what the operating system is and then make a directory to storage files 
     sys = platform.system()
@@ -17,39 +18,68 @@ def pyTube_folder():    #To check what the operating system is and then make a d
 
     return folder  #Users\user\Videos\PyTube
 
+def merge_files(video_path, audio_path, output_path):
+    command = [
+        "ffmpeg",
+        "-i", video_path,
+        "-i", audio_path,
+        "-c:v", "copy",
+        "-c:a", "aac",
+        output_path
+    ]
+    subprocess.run(command)
+    remove(video_path)
+    remove(audio_path)
+
+    print("Merge complete.")
+
 def download_audio(yt, folder): #To download audio
     audio = yt.streams.get_audio_only()
     if audio:
         print('Downloading audio file...')
-        audio.download(output_path=folder, 
-                       filename_prefix='audio_')
+        return audio.download(output_path=folder, 
+                              filename_prefix='audio_')
     else:
         print('Error: No audio file exists')
         return None
     
-def download_video(yt, res, folder): #To download video
-    video = yt.streams.filter(resolution=res,adaptive=True).first()
-    if video:                        #If video is adaptive, just download it
-        video.download(output_path=folder,
-                       filename = output_filename)
-        print('Download Complete')
+def download_video(yt, res, folder, filename):
+
+    progressive = yt.streams.filter(resolution=res, progressive=True).first()
+
+    if progressive:
+        print(f"Downloading {res} (progressive)...")
+        progressive.download(output_path=folder, filename=filename)
+        print("Download complete.")
         return
-    else:
-        video = yt.streams.filter(resolution=res,progressive=True).first() #If video is progressive, download the audio, too
-        video.download(output_path=folder,
-                       filename_prefix='video_')
-        download_audio(yt, folder)
-        if download_audio(yt, folder) == None: 
-            print('The video has no audio')
-            return 'video only'
-        else:
-            print('Video and audio are both downloaded')
+
+    # 如果沒有 progressive
+
+    video = yt.streams.filter(resolution=res, adaptive=True).first()
+
+    if not video:
+        print("No matching stream found.")
+        return
+    
+    print("No progressive stream found. Using adaptive + ffmpeg merge.")
+    print(f'Downloading {res} video file (adaptive)')
+    
+    video_path = video.download(output_path=folder, filename_prefix='video_')
+    audio_path = download_audio(yt, folder)
+
+    output_path = path.join(folder, filename)
+
+    merge_files(video_path,audio_path,output_path)
+
+    return  
+
+
 
 def onProgress(stream, chunk, remains):
     total = stream.filesize
     if total > 0:
         percent = (total - remains) / total * 100
-    print(f'Downloading...{percent:05.2f}', end='\r')
+    print(f'Downloading...{percent:06.2f}%', end='\r')
 
 
 def main():
@@ -72,72 +102,60 @@ def main():
             download_audio(yt, download_folder)
             return
         
-        global output_filename 
-        
-
+         
         target_res = None
+
+        resolution_map = {'sd': '480p',            #resolution options
+                          'hd': '720p',
+                          'fhd': '1080p',
+                          'qhd': '1440p',
+                          'uhd': '2160p'
+                          }
+
         desired_res = None
 
-        if args.sd:     
-            desired_res = '480p'
-        elif args.hd:
-            desired_res = '720p'
-        elif args.fhd:
-            desired_res = '1080p'
-        elif args.qhd:
-            desired_res = '1440p'
-        elif args.uhd:
-            desired_res = '2160p'
+        for key, value in resolution_map.items():     
+            if getattr(args, key):
+                desired_res = value
+                break
 
-        video_res = [False]*5
-        resolutions = [['480p',False],
-                       ['720p',False],
-                       ['1080p',False],
-                       ['1440p',False],
-                       ['2160p',False]]
 
-        for i in yt.streams:
-            if 'res="480p"' in str(yt.streams[i]):
-                resolutions[0][1] = True
-            elif 'res="720p"' in str(yt.streams[i]):
-                resolutions[1][1] = True
-            elif 'res="1080p"' in str(yt.streams[i]):
-                resolutions[2][1] = True
-            elif 'res="1440p"' in str(yt.streams[i]):
-                resolutions[3][1] = True
-            elif 'res="2160p"' in str(yt.streams[i]):
-                resolutions[4][1] = True
+        available_resolutions = sorted(
+            {
+            stream.resolution
+            for stream in yt.streams.filter(file_extension='mp4')
+            if stream.resolution is not None
+            },
+            key=lambda x: int(x.replace("p", ""))
+            )
 
-        is_Find = False
-        for i in range(5):
-            if (desired_res in resolutions[i]) and (resolutions[i][1] == True): #If desired res is available, target_res = desired_res
-                target_res = desired_res
-                is_Find = True
 
-        if not is_Find: #If desired res is not available, make a list and let user to choose another
-            new_resolutions = []
-            count = 0
-            print(f'The resolution is unusable.')
-            for i in range(5):
-                if True in resolutions[i]:
-                    new_resolutions.append(resolutions[i])
-                    count += 1
-                    print(f'{count+1}) {new_resolutions[0]}')
+        if desired_res and desired_res in available_resolutions:
+            target_res = desired_res
+        else:
+            print("Available resolutions:")
 
-            val = int(input('Select one number(Default is "1"):'))
+            for idx, res in enumerate(available_resolutions, start=1):
+                print(f"{idx}) {res}")
+
             try:
-                if (val > 0) and (val <= len(new_resolutions)):
-                    target_res = new_resolutions[val][0]
+                choice = input("Select resolution number (default=1): ")
+
+                if choice.strip() == "":
+                    target_res = available_resolutions[0]
                 else:
-                    print('You seleted a invalid number, using "Default"')
-                    target_res = new_resolutions[0][0]
-            except ValueError:
-                    target_res = new_resolutions[0][0]
-            output_filename = f'{yt.title} ({target_res}).mp4'
-            full_path = path.join(download_folder,output_filename)
-            download_video(yt, target_res, download_folder)
-            
-            
+                    choice = int(choice)
+                    target_res = available_resolutions[choice - 1]
+
+            except (ValueError, IndexError):
+                print("Invalid selection. Using default.")
+                target_res = available_resolutions[0]
+
+        global output_filename
+        output_filename = f"{yt.title} ({target_res}).mp4"
+        download_video(yt, target_res, download_folder, output_filename)
+
+
     except exceptions.PytubeFixError as e:
         print(f'\nPytube errors: {e}')
 

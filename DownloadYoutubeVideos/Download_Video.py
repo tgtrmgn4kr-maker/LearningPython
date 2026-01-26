@@ -8,11 +8,10 @@ try:
     print(yt.streams) #Information in the video
     print(yt.streams.filter(resolution='2160p')[1])
     video = yt.streams.filter(resolution='2160p')[1]
-    video.download(output_path='.\\DownloadYoutubeVideos')  #video with no audio
+    path = video.download(output_path='.\\DownloadYoutubeVideos')  #video with no audio
     audio = yt.streams.get_audio_only()
     audio.download(output_path='.\\DownloadYoutubeVideos')
-    for i in yt.streams:
-        print(f'\n{i}')
+    print(path)
 except FileNotFoundError as e:
     print(f'ErrorsOccured: {e}')
     print('The file cannot be find. Please check if you have permission to access files')
