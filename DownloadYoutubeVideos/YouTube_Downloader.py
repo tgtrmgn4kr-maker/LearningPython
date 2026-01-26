@@ -66,7 +66,7 @@ def download_video(yt, res, folder, filename):
         print("Download complete.")
         return
 
-    # 如果沒有 progressive
+    # If there is no progressive file
 
     video = yt.streams.filter(resolution=res, adaptive=True).first()
 
@@ -105,7 +105,7 @@ def main():
     parser.add_argument('-a',  action='store_true', help='Audio Only')
 
     args = parser.parse_args()
-    download_folder = pyTube_folder()   ##Users\user\Videos\PyTube
+    download_folder = pyTube_folder()   #Users\user\Videos\PyTube
 
     try:
         yt = YouTube(args.url, on_progress_callback=onProgress)
@@ -165,7 +165,7 @@ def main():
                 target_res = available_resolutions[0]
 
         global output_filename
-        safe_title = sanitize_filename(yt.title)
+        safe_title = sanitize_filename(yt.title) #Make the title legal
         output_filename = f"{safe_title} ({target_res}).mp4"
         download_video(yt, target_res, download_folder, output_filename)
         print(f'Downloading is completed. The video is saved at {download_folder}')

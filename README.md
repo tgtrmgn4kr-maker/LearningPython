@@ -48,3 +48,23 @@ and virtual environments in Python.
 ### Files
 - `Chicken_and_VirtualEnvironment.py`: try to install 'sympy' and use it
 - `environment.yml`: record a environment which can run `Chicken_and_VirtualEnvironment.py`
+
+## DownloadYoutubeVideos
+
+This directory contains practice scripts for learning how to download video and audio from YouTube with pytubefix in Python
+
+### What I practiced
+- Using `argparse` to process the command-line arguments entered by the user.
+- Checking the user's operating system and then making a directory properly to store files downloaded by `YouTube_Downloader.py`
+- Using `pytubefix` to analyze formats of audio and video and then download them
+- Using `subprocess.run()` to run a command which is written in `YouTube_Downloader.py`
+- Using `getattr()` to check if the resolution that the user chose is available
+- Writing a function `sanitize_filename()` to prevent from errors occuring because of illegal characters in Windows  
+- Using `try except` to monitor the errors occured during running
+
+### Notes
+- Write more comment to make your code more readable
+
+### Files
+- `Download_Video.py`: To understand how to use `pytubefix`
+- `YouTube_Downloader.py`: To make a available file to download files from YouTube
