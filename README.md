@@ -68,3 +68,19 @@ This directory contains practice scripts for learning how to download video and 
 ### Files
 - `Download_Video.py`: To understand how to use `pytubefix`
 - `YouTube_Downloader.py`: To make a available file to download files from YouTube
+
+## ClassAndFiles
+
+This directory contains practice scripts for learning `class`
+
+### What I practiced
+- Using `from XXX import XX` to import a module in `sample.py`, which is made by me
+- Using a setter to set protected instance variable
+- Using a getter to get private class variable
+- Writing `__str__()` and `__repr__()` functions in file to let user get information
+
+### Notes
+- Protected instance variable and private class variable are not always safe. They still can be accessed by external process
+
+###　Files
+- `sample.py`: To understand the type *class*
