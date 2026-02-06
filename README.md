@@ -59,8 +59,8 @@ This directory contains practice scripts for learning how to download video and 
 - Using `pytubefix` to analyze formats of audio and video and then download them
 - Using `subprocess.run()` to run a command which is written in `YouTube_Downloader.py`
 - Using `getattr()` to check if the resolution that the user chose is available
-- Writing a function `sanitize_filename()` to prevent from errors occuring because of illegal characters in Windows  
-- Using `try except` to monitor the errors occured during running
+- Writing a function `sanitize_filename()` to prevent from errors occurring because of illegal characters in Windows  
+- Using `try except` to monitor the errors occurred during running
 
 ### Notes
 - Write more comment to make your code more readable
@@ -71,7 +71,7 @@ This directory contains practice scripts for learning how to download video and 
 
 ## ClassAndFiles
 
-This directory contains practice scripts for learning `class`
+This directory contains practice scripts for learning attribute `class`
 
 ### What I practiced
 - Using `from XXX import XX` to import a module in `sample.py`, which is made by me
@@ -88,3 +88,9 @@ This directory contains practice scripts for learning `class`
 ## DownloadVideo_remake
 
 This directory contains practice files to remake `YouTube_Downloader.py`. I want these file can run directly rather than input command and then run (Unfinished)
+
+## RegularExpression
+
+This directory contains practice scripts for learning regular expression
+
+### What I practiced
