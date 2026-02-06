@@ -23,7 +23,7 @@ files and directories in Python.
 - `find_dirs.py`: walk through directory trees
 - `shutil_move_a_picture.py`: practice moving files
 
-## Pip_and_Environment Practice
+## PackagesAndVirtualEnvironment Practice
 
 This directory contains practice scripts for learning how to operate packages
 and virtual environments in Python.
