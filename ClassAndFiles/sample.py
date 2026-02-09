@@ -11,8 +11,8 @@ class Order():
     def check(self):
         sum = self._amount * Order.__price
 
-        sause = 'spicy' if self._spicy else 'not spicy'
-        print(f'You have ordered {self._amount} burger(s) which are {sause}. Total price is ${sum}.')
+        sauce = 'spicy' if self._spicy else 'not spicy'
+        print(f'You have ordered {self._amount} burger(s) which are {sauce}. Total price is ${sum}.')
 
     @property  #Getter for private class variable
     def number(self):
