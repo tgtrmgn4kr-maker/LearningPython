@@ -49,7 +49,7 @@ and virtual environments in Python.
 - `Chicken_and_VirtualEnvironment.py`: try to install 'sympy' and use it
 - `environment.yml`: record a environment which can run `Chicken_and_VirtualEnvironment.py`
 
-## DownloadYoutubeVideos
+## DownloadYoutubeVideos Practice
 
 This directory contains practice scripts for learning how to download video and audio from YouTube with pytubefix in Python
 
@@ -69,7 +69,7 @@ This directory contains practice scripts for learning how to download video and 
 - `Download_Video.py`: To understand how to use `pytubefix`
 - `YouTube_Downloader.py`: To make a available file to download files from YouTube
 
-## ClassAndFiles
+## ClassAndFiles Practice
 
 This directory contains practice scripts for learning attribute `class`
 
@@ -85,11 +85,11 @@ This directory contains practice scripts for learning attribute `class`
 ###　Files
 - `sample.py`: To understand the type *class*
 
-## DownloadVideo_remake
+## DownloadVideo_remake Practice
 
 This directory contains practice files to remake `YouTube_Downloader.py`. I want these file can run directly rather than input command and then run (Unfinished)
 
-## RegularExpression
+## RegularExpression Practice
 
 This directory contains practice scripts for learning regular expression
 
