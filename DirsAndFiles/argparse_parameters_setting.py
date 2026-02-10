@@ -19,7 +19,7 @@ parser.add_argument('-d',
                     #Optional long parameter (two minus sign)
                     #nargs:number of parameter(+:At least one)(All parameters are packaged into a list)
                     #Set the parameter as a required one
-                    #It shows when you excute 'python argparse_parameters_setting.py -h'
+                    #It shows when you execute 'python argparse_parameters_setting.py -h'
                     #Optional. The default is "store" 
 """
                                

@@ -94,3 +94,13 @@ This directory contains practice files to remake `YouTube_Downloader.py`. I want
 This directory contains practice scripts for learning regular expression
 
 ### What I practiced
+- Using regular expression to check if the text match the characters we want
+- Using `group()` to get the stored matched text
+- Using `(?:)` to not capture the group
+
+### Notes
+- Using `(?:)` to not capture the group, and then it cannot to be gotten by b_match.group(1)
+
+### Files
+- `tel.py`: To practice regular expression by phone number
+

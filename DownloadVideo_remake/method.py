@@ -29,7 +29,7 @@ def sanitize_filename(name):
     name = re.sub(r'[<>:"/\\|?*]', '_', name)
     # 移除開頭結尾的點或空格
     name = name.strip(' .')
-    # 限制長度（Windows 有路徑長度限制，但通常 1080p 標題不會爆）
+    # 限制長度
     if len(name) > 200:
         name = name[:197] + "..."
     return name
